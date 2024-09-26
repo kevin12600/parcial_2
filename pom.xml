@@ -33,11 +33,22 @@
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
+                        <exclusions>
+            <exclusion>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-logging</artifactId> <!-- Este  se excluye -->
+            </exclusion>
+        </exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-webflux</artifactId>
 		</dependency>
+                <!-- Log4j2 -->
+      <dependency>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-log4j2</artifactId> <!-- Este es el que se añade -->
+     </dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
@@ -45,6 +56,36 @@
 			<scope>runtime</scope>
 			<optional>true</optional>
 		</dependency>
+                <dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.34</version>
+			<scope>provided</scope>
+		</dependency>
+                <dependency>
+        <groupId>javax.xml.bind</groupId>
+        <artifactId>jaxb-api</artifactId>
+        <version>2.3.1</version>
+    </dependency>
+    <dependency>
+        <groupId>org.glassfish.jaxb</groupId>
+        <artifactId>jaxb-runtime</artifactId>
+        <version>2.3.2</version>
+    </dependency>
+    <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-core</artifactId>
+        <version>2.3.0</version>
+    </dependency>
+    <dependency>
+        <groupId>com.sun.xml.bind</groupId>
+        <artifactId>jaxb-impl</artifactId>
+        <version>2.3.0</version>
+    </dependency>
+    <dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-web-services</artifactId>
+</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-test</artifactId>
@@ -60,6 +101,12 @@
 			<artifactId>reactor-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+	 <dependency>
+	  <groupId>org.springframework.ws</groupId>
+	  <artifactId>spring-ws</artifactId>
+	  <version>2.1.3.RELEASE</version>
+	  <type>pom</type>
+	 </dependency>
 	</dependencies>
 
 	<build>
@@ -68,6 +115,33 @@
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
+                        
+                        
+                        <plugin>
+    <groupId>org.jvnet.jaxb2.maven2</groupId>
+    <artifactId>maven-jaxb2-plugin</artifactId>
+    <version>0.14.0</version>
+    <executions>
+        <execution>
+            <goals>
+                <goal>generate</goal>
+            </goals>
+        
+        
+        <configuration>
+             <arguments>-Djavax.net.ssl.trustStore=/path/to/truststore</arguments>
+            <schemaLanguage>WSDL</schemaLanguage>
+            <generateDirectory>${project.basedir}/src/main/java</generateDirectory>
+            <generatePackage>com.soap.wsdl</generatePackage>
+            <schemas>
+                <schema>
+                    <url>https://www.banguat.gob.gt/variables/ws/TipoCambio.asmx?WSDL</url>
+                </schema>
+            </schemas>
+        </configuration>
+          </execution>
+    </executions>
+</plugin>
 		</plugins>
 	</build>
 
